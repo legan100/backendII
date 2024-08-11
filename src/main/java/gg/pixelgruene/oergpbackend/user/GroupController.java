@@ -1,13 +1,28 @@
 package gg.pixelgruene.oergpbackend.user;
 
 import gg.pixelgruene.oergpbackend.Main;
+import lombok.Getter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+@Getter
 public class GroupController extends Group{
+
+    private Long id;
+    private String groupname;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setGroupname(String groupname) {
+        this.groupname = groupname;
+    }
 
     public boolean isGroupNameAvailable(String groupName) {
         String query = "SELECT COUNT(*) FROM groups WHERE groupname = ?";

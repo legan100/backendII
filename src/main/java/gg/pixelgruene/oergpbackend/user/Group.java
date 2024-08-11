@@ -1,6 +1,7 @@
 package gg.pixelgruene.oergpbackend.user;
 
 import gg.pixelgruene.oergpbackend.Main;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,10 +9,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class Group {
 
     private Long id;
-
     private String groupname;
 
     public Long getId() {
