@@ -1,0 +1,3 @@
+[16:51:37] [INFO]Backend ist starting
+[16:51:37] [ERROR]java.sql.SQLNonTransientConnectionException: Socket fail to connect to host:address=(host=127.0.0.1)(port=3306)(type=primary). Connection refused: getsockopt
+[16:51:37] [ERROR]java.sql.SQLNonTransientConnectionException: Socket fail to connect to host:address=(host=127.0.0.1)(port=3306)(type=primary). Connection refused: getsockopt

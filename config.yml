@@ -1,0 +1,10 @@
+server:
+  type: simple
+  applicationConnectors:
+    - type: http
+      port: 8080  # Standardport für Dropwizard
+      bindHost: 128.140.40.20  # IP-Adresse, an die gebunden wird
+  adminConnectors:
+    - type: http
+      port: 8081  # Admin-Port für Dropwizard (optional)
+      bindHost: 128.140.40.20  # IP-Adresse, an die gebunden wird

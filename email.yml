@@ -1,0 +1,6 @@
+hostname: localhost
+smtp.port: 587
+smtp.auth: true
+smtp.start.tls.enable: true
+username: info@example.com
+password: password
