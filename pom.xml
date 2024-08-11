@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>gg.pixelgruene</groupId>
-    <artifactId>OERGPBackend</artifactId>
+    <artifactId>backendII</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
