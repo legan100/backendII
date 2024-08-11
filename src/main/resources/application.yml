@@ -1,0 +1,12 @@
+spring:
+  security:
+    user:
+      password: ac53b2d8-558c-4271-99f9-e3eead3a9b5e
+      name: User
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: 0wCm38aBx8aTCFQz
+    key-store-type: PKCS12
+    key-alias: my-ssl-cert
