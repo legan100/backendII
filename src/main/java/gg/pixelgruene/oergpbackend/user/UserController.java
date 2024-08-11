@@ -4,6 +4,7 @@ import gg.pixelgruene.oergpbackend.Main;
 import gg.pixelgruene.oergpbackend.commands.add.CMD_CreateUser;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Repository;
 
 import javax.mail.internet.*;
 import java.sql.Connection;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 
 @Getter
 @Setter
+@Repository
 public class UserController extends User{
 
     String username;

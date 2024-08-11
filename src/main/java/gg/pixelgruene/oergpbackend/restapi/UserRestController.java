@@ -1,12 +1,12 @@
 package gg.pixelgruene.oergpbackend.restapi;
 
-import gg.pixelgruene.oergpbackend.Main;
 import gg.pixelgruene.oergpbackend.user.User;
 import gg.pixelgruene.oergpbackend.user.UserController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 @RestController
 @RequestMapping("/api/users")
@@ -15,10 +15,7 @@ public class UserRestController {
     private final UserController userController = new UserController();
 
     @PostMapping("/create")
-    public ResponseEntity<String> createUser(@RequestParam String email,
-                                             @RequestParam long groupid,
-                                             @RequestParam String username,
-                                             @RequestParam String password) {
+    public ResponseEntity<String> createUser(@RequestParam String email, @RequestParam long groupid, @RequestParam String username, @RequestParam String password) {
         try {
             userController.setUsername(username);
             userController.createUser(email, password, groupid);
@@ -29,8 +26,7 @@ public class UserRestController {
     }
 
     @PostMapping("/update-password")
-    public ResponseEntity<String> updatePassword(@RequestParam String username,
-                                                 @RequestParam String email) {
+    public ResponseEntity<String> updatePassword(@RequestParam String username, @RequestParam String email) {
         try {
             userController.updatePassword(username, email);
             return ResponseEntity.ok("Password updated successfully");
@@ -40,8 +36,7 @@ public class UserRestController {
     }
 
     @PostMapping("/update-email")
-    public ResponseEntity<String> updateEmail(@RequestParam int userId,
-                                              @RequestParam String newEmail) {
+    public ResponseEntity<String> updateEmail(@RequestParam int userId, @RequestParam String newEmail) {
         try {
             userController.updateEmail(userId, newEmail);
             return ResponseEntity.ok("Email updated successfully");
@@ -51,8 +46,7 @@ public class UserRestController {
     }
 
     @PostMapping("/update-group")
-    public ResponseEntity<String> updateUserGroup(@RequestParam int userId,
-                                                  @RequestParam int groupId) {
+    public ResponseEntity<String> updateUserGroup(@RequestParam int userId, @RequestParam int groupId) {
         try {
             userController.updateUserGroup(userId, groupId);
             return ResponseEntity.ok("User group updated successfully");
@@ -62,8 +56,7 @@ public class UserRestController {
     }
 
     @PostMapping("/update-username")
-    public ResponseEntity<String> updateUsername(@RequestParam int userId,
-                                                 @RequestParam String username) {
+    public ResponseEntity<String> updateUsername(@RequestParam int userId, @RequestParam String username) {
         try {
             userController.updateUsername(userId, username);
             return ResponseEntity.ok("Username updated successfully");
@@ -138,7 +131,35 @@ public class UserRestController {
     }
 
     @GetMapping("/check-email")
-    public void checkEmail(@RequestParam String email, @RequestParam String username) throws SQLException {
-        userController.checkEmail(email, username);
+    public boolean checkEmail(@RequestParam String email, @RequestParam String username) throws SQLException {
+        return Boolean.parseBoolean(userController.checkEmail(username));
+    }
+
+    // Endpoint to get the last login time by username
+    @GetMapping("/lastLogin/username/{username}")
+    public ResponseEntity<Timestamp> getLastLoginByUsername(@PathVariable String username) {
+        Timestamp lastLogin = userController.getLastLoginByUsername(username);
+        return ResponseEntity.ok(lastLogin);
+    }
+
+    // Endpoint to get the last login time by email
+    @GetMapping("/lastLogin/email/{email}")
+    public ResponseEntity<Timestamp> getLastLoginByEmail(@PathVariable String email) {
+        Timestamp lastLogin = userController.getLastLoginByEmail(email);
+        return ResponseEntity.ok(lastLogin);
+    }
+
+    // Endpoint to get the registration time by username
+    @GetMapping("/registrationTime/username/{username}")
+    public ResponseEntity<Timestamp> getRegistrationTimeByUsername(@PathVariable String username) {
+        Timestamp registrationTime = userController.getRegistrationTimeByUsername(username);
+        return ResponseEntity.ok(registrationTime);
+    }
+
+    // Endpoint to get the registration time by email
+    @GetMapping("/registrationTime/email/{email}")
+    public ResponseEntity<Timestamp> getRegistrationTimeByEmail(@PathVariable String email) {
+        Timestamp registrationTime = userController.getRegistrationTimeByEmail(email);
+        return ResponseEntity.ok(registrationTime);
     }
 }
