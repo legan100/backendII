@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 @Service
 public class UserService {
@@ -53,5 +54,25 @@ public class UserService {
         } else {
             Main.getLogger().logInfo("Email address is not in use");
         }
+    }
+
+    public Timestamp getLastLoginByUsername(String username) {
+        User user = new User();
+        return user.getLastLoginByUsername(username);
+    }
+
+    public Timestamp getLastLoginByEmail(String email) {
+        User user = new User();
+        return user.getLastLoginByEmail(email);
+    }
+
+    public Timestamp getRegistrationTimeByUsername(String username) {
+        User user = new User();
+        return user.getRegistrationTimeByUsername(username);
+    }
+
+    public Timestamp getRegistrationTimeByEmail(String email) {
+        User user = new User();
+        return user.getRegistrationTimeByEmail(email);
     }
 }

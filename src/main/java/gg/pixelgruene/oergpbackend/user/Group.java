@@ -1,18 +1,18 @@
 package gg.pixelgruene.oergpbackend.user;
 
 import gg.pixelgruene.oergpbackend.Main;
-import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
 public class Group {
 
     private Long id;
+
     private String groupname;
 
     public Long getId() {
@@ -62,6 +62,26 @@ public class Group {
             throw new RuntimeException(e);
         }
         return groupName;
+    }
+
+    public boolean isGroupNameAvailable(String groupName) {
+        String query = "SELECT COUNT(*) FROM groups WHERE groupname = ?";
+
+        try (Connection connection = Main.getDatabaseManager().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, groupName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1) == 0;
+            }
+        } catch (SQLException e) {
+            Main.getLogger().logError("Fehler bei der Überprüfung des Gruppennamens: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        return false;
     }
 
     public static List<Group> getAllGroups() {

@@ -1,7 +1,6 @@
 package gg.pixelgruene.oergpbackend.security;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.lang.Collections;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -27,17 +26,12 @@ public class TokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         UserService userService = new UserService();
-
-        //TODO: Loginmethod
         if(request.getRequestURI().equals("/login")||request.getRequestURI().equals("/api/users/create")) {
             doFilter(request, response, filterChain);
         }
 
-
         UserService userService1 = new UserService();
-
         Cookie[] cookies = request.getCookies();
-
         String token = null;
 
         for(Cookie cookie : cookies) {
@@ -54,8 +48,7 @@ public class TokenFilter extends OncePerRequestFilter {
         }
 
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(userService.userController.getUsernameByEmail(mail), null, null);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userService.userController.getUsernameByEmail(mail), null, null);
         authentication.setDetails(userid);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
