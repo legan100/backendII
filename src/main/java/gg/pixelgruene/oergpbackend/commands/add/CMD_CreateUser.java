@@ -40,8 +40,9 @@ public class CMD_CreateUser {
 
         UserController userController = new UserController();
         userController.setUsername(username);
-        userController.setPassword(password);
         userController.setEmail(email);
-        userController.createUser(email, password, groupid);
+        userController.createUser(username, email, password, groupid);
     }
+
+
 }

@@ -34,7 +34,7 @@ public class Group {
     public long getGroupID(String groupname) {
         Long groupId = null;
         try {
-            PreparedStatement st = Main.getDatabaseManager().getConnection().prepareStatement(
+            PreparedStatement st = Main.getBackend().getConnection().prepareStatement(
                     "SELECT groupid FROM groups WHERE groupname = ?");
             st.setString(1, groupname);
             ResultSet rs = st.executeQuery();
@@ -50,7 +50,7 @@ public class Group {
     public static String getGroupNameById(Long groupid) {
         String groupName = null;
         try {
-            PreparedStatement st = Main.getDatabaseManager().getConnection().prepareStatement(
+            PreparedStatement st = Main.getBackend().getConnection().prepareStatement(
                     "SELECT groupname FROM groups WHERE groupid = ?");
             st.setLong(1, groupid);
             ResultSet rs = st.executeQuery();
@@ -67,7 +67,7 @@ public class Group {
     public boolean isGroupNameAvailable(String groupName) {
         String query = "SELECT COUNT(*) FROM groups WHERE groupname = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, groupName);
@@ -87,7 +87,7 @@ public class Group {
     public static List<Group> getAllGroups() {
         List<Group> groups = new ArrayList<>();
         try {
-            PreparedStatement st = Main.getDatabaseManager().getConnection().prepareStatement("SELECT * FROM groups");
+            PreparedStatement st = Main.getBackend().getConnection().prepareStatement("SELECT * FROM groups");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Group group = new Group();

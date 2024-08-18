@@ -10,7 +10,7 @@ public class GroupController extends Group{
 
     public void addGroup(String groupName) {
         try {
-            PreparedStatement st = Main.getDatabaseManager().getConnection().prepareStatement("INSERT INTO groups (groupname) VALUES (?)");
+            PreparedStatement st = Main.getBackend().getConnection().prepareStatement("INSERT INTO groups (groupname) VALUES (?)");
             st.executeUpdate();
             Main.getLogger().logInfo("Gruppe erfolgreich hinzugefügt: " + groupName);
 
@@ -30,7 +30,7 @@ public class GroupController extends Group{
     public void updateGroupName(int groupId, String newName) {
         String updateGroupSQL = "UPDATE groups SET groupname = ? WHERE groupid = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateGroupSQL)) {
 
             preparedStatement.setString(1, newName);
@@ -58,7 +58,7 @@ public class GroupController extends Group{
     public void removeGroupById(int groupId) {
         String deleteGroupSQL = "DELETE FROM groups WHERE groupid = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteGroupSQL)) {
 
             preparedStatement.setInt(1, groupId);
@@ -84,7 +84,7 @@ public class GroupController extends Group{
     public void removeGroupByName(String groupName) {
         String deleteGroupSQL = "DELETE FROM groups WHERE groupname = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteGroupSQL)) {
 
             preparedStatement.setString(1, groupName);

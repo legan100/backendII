@@ -28,7 +28,7 @@ public class UserController extends User{
 
     public boolean isUsernameAvailable(String username) {
         try {
-            PreparedStatement st = Main.getDatabaseManager().getConnection().prepareStatement("SELECT COUNT(*) FROM users WHERE username = ?");
+            PreparedStatement st = Main.getBackend().getConnection().prepareStatement("SELECT COUNT(*) FROM users WHERE username = ?");
             st.setString(1, username);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
@@ -40,18 +40,18 @@ public class UserController extends User{
         return false;
     }
 
-    public void createUser(String email, String password, long groupid){
+    public void createUser(String username, String email,String password, long groupid){
         try {
             if (email == null || email.isEmpty()) {
                 throw new IllegalArgumentException("Email address is empty or null");
             }
             InternetAddress emailAddr = new InternetAddress(email);
             emailAddr.validate();
-            this.checkUsername(this.getUsername());
+            this.checkUsername(this.getUsernameByEmail(email));
             Main.getLogger().logInfo("GroupID: " + groupid);
-            PreparedStatement st = Main.getDatabaseManager().getConnection().prepareStatement("INSERT INTO users (email, username, password, groupid) VALUES (?, ?, ?, ?)");
+            PreparedStatement st = Main.getBackend().getConnection().prepareStatement("INSERT INTO users (email, username, password, groupid) VALUES (?, ?, ?, ?)");
             st.setString(1, email);
-            st.setString(2, this.getUsername());
+            st.setString(2, username);
             String passwordEncoderpass = CMD_CreateUser.passwordEncoder.encode(password);
             st.setString(3, passwordEncoderpass);
             st.setLong(4, groupid);
@@ -60,7 +60,7 @@ public class UserController extends User{
 
             // Send confirmation email
             Main.getEmailHandler().sendEmail(this.getUser(), "Logindaten",
-                    "Hallo " + this.getUsername() + ", \n\nwir freuen uns, dass du dich registriert hast.\n\nIn dieser E-Mail erhälst du deine Zugangsdaten.\n\nBitte melde dich mit diesen an. Nach dieser Anmeldung wirst du aufgefordert, das Passwort zu ändern. \n\nName: " + this.getEmail(this.getUsername()) + "\nPasswort: " + this.getPassword() + "\n\nHier findest du die Datenschutzerklärung. \nSolltest du noch Fragen haben, darfst du dich gerne an den Support herantreten. \n\nViele Grüße\n\nDein Team", this.getEmail(this.getUsername()));
+                    "Hallo " + username + ", \n\nwir freuen uns, dass du dich registriert hast.\n\nIn dieser E-Mail erhälst du deine Zugangsdaten.\n\nBitte melde dich mit diesen an. Nach dieser Anmeldung wirst du aufgefordert, das Passwort zu ändern. \n\nName: " + this.getEmail(username) + "\nPasswort: " + this.getPassword(username) + "\n\nHier findest du die Datenschutzerklärung. \nSolltest du noch Fragen haben, darfst du dich gerne an den Support herantreten. \n\nViele Grüße\n\nDein Team", this.getEmail(username));
         } catch (AddressException e) {
             throw new RuntimeException("Invalid email address: " + email, e);
         } catch (SQLException e) {
@@ -72,7 +72,7 @@ public class UserController extends User{
         if(isUserExists(username)){
             String newPassword = Main.getInternalMethods().createPassword(16, "abcdefghijklmnopqrstuvwxyz","ABCDEFGHIJKLMNOPQRSTUVWXYZ","-.,;.-!0123456789");
             try {
-                PreparedStatement st = Main.getDatabaseManager().getConnection().prepareStatement("UPDATE users SET password = ? WHERE username = ?");
+                PreparedStatement st = Main.getBackend().getConnection().prepareStatement("UPDATE users SET password = ? WHERE username = ?");
                 st.setString(1, newPassword);
                 st.setString(2, username);
                 st.executeUpdate();
@@ -94,7 +94,7 @@ public class UserController extends User{
     public void updateEmail(int userId, String newEmail) {
         String updateEmailSQL = "UPDATE users SET email = ? WHERE userid = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateEmailSQL)) {
 
             preparedStatement.setString(1, newEmail);
@@ -123,7 +123,7 @@ public class UserController extends User{
     public void updateEmail(String username, String newEmail) {
         String updateEmailSQL = "UPDATE users SET email = ? WHERE username = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateEmailSQL)) {
 
             preparedStatement.setString(1, newEmail);
@@ -145,7 +145,7 @@ public class UserController extends User{
     public void updateUserGroup(int userId, int groupId) {
         String updateUserGroupSQL = "UPDATE users SET groupid = ? WHERE userid = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateUserGroupSQL)) {
 
             preparedStatement.setInt(1, groupId);
@@ -174,7 +174,7 @@ public class UserController extends User{
     public void updateUserGroup(String username, int groupId) {
         String updateUserGroupSQL = "UPDATE users SET groupid = ? WHERE username = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateUserGroupSQL)) {
 
             preparedStatement.setInt(1, groupId);
@@ -203,7 +203,7 @@ public class UserController extends User{
     public void updateUsername(int userId, String username) {
         String updateUsernameSQL = "UPDATE users SET username = ? WHERE userid = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateUsernameSQL)) {
 
             preparedStatement.setString(1, username);
@@ -232,7 +232,7 @@ public class UserController extends User{
     public void updateUsernameByEmail(String email, String username) {
         String updateUsernameSQL = "UPDATE users SET username = ? WHERE email = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateUsernameSQL)) {
 
             preparedStatement.setString(1, username);
@@ -260,7 +260,7 @@ public class UserController extends User{
     public void removeUserById(int userId) {
         String deleteUserSQL = "DELETE FROM users WHERE userid = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteUserSQL)) {
 
             preparedStatement.setInt(1, userId);
@@ -287,7 +287,7 @@ public class UserController extends User{
     public void removeUserByUsername(String username) {
         String deleteUserSQL = "DELETE FROM users WHERE username = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteUserSQL)) {
 
             preparedStatement.setString(1, username);
@@ -314,7 +314,7 @@ public class UserController extends User{
     public void removeUserByEmail(String email) {
         String deleteUserSQL = "DELETE FROM users WHERE email = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteUserSQL)) {
 
             preparedStatement.setString(1, email);
@@ -332,4 +332,7 @@ public class UserController extends User{
         }
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

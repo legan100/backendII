@@ -30,7 +30,7 @@ public class User {
         String query = "SELECT username FROM users WHERE userid = ?";
         String username = null;
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, userId);
@@ -58,7 +58,7 @@ public class User {
         String query = "SELECT username FROM users WHERE email = ?";
         String username = null;
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, email);
@@ -78,7 +78,7 @@ public class User {
 
     public boolean isUserExists(String username) {
         try {
-            PreparedStatement st = Main.getDatabaseManager().getConnection().prepareStatement("SELECT COUNT(*) FROM users WHERE username = ?");
+            PreparedStatement st = Main.getBackend().getConnection().prepareStatement("SELECT COUNT(*) FROM users WHERE username = ?");
             st.setString(1, username);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
@@ -94,7 +94,7 @@ public class User {
     public String getPasswordByUserID(int id, String pasword) {
         int userId = 0;
         try {
-            PreparedStatement st = Main.getDatabaseManager().getConnection().prepareStatement("SELECT password FROM users WHERE userid = ?");
+            PreparedStatement st = Main.getBackend().getConnection().prepareStatement("SELECT password FROM users WHERE userid = ?");
             st.setString(1, String.valueOf(userId));
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -110,7 +110,7 @@ public class User {
 
     public String getPasswordbyUsername(String username, String pasword) {
         try {
-            PreparedStatement st = Main.getDatabaseManager().getConnection().prepareStatement("SELECT password FROM users WHERE username = ?");
+            PreparedStatement st = Main.getBackend().getConnection().prepareStatement("SELECT password FROM users WHERE username = ?");
             st.setString(1, String.valueOf(username));
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -128,7 +128,7 @@ public class User {
         int userId = -1; // Standardwert für ungültige ID
         String query = "SELECT userid FROM users WHERE username = ? OR email = ?";
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement st = connection.prepareStatement(query)) {
 
             st.setString(1, usernameOrEmail);
@@ -153,7 +153,7 @@ public class User {
     public String getEmailByUsername(String username) {
         String email = "";
         try {
-            PreparedStatement st = Main.getDatabaseManager().getConnection().prepareStatement("SELECT email FROM users WHERE userid = ?");
+            PreparedStatement st = Main.getBackend().getConnection().prepareStatement("SELECT email FROM users WHERE userid = ?");
             st.setString(1, String.valueOf(username));
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -169,7 +169,7 @@ public class User {
     public String getEmailByUserId(int userId) {
         String email = null;
         try {
-            PreparedStatement st = Main.getDatabaseManager().getConnection().prepareStatement("SELECT email FROM users WHERE userid = ?");
+            PreparedStatement st = Main.getBackend().getConnection().prepareStatement("SELECT email FROM users WHERE userid = ?");
             st.setInt(1, userId);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
@@ -186,7 +186,7 @@ public class User {
         String query = "SELECT * FROM users WHERE email = ?";
         User user = null;
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -204,12 +204,16 @@ public class User {
         return user;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public User getUser() {
         return this;
     }
 
     public String checkUsername(String username) throws SQLException{
-        if(getUsername().equals(username)){
+        if(isUserExists(username)){
             Main.getLogger().logInfo("username is already in use");
         }else{
             Main.getLogger().logInfo("username is not in use.");
@@ -218,7 +222,7 @@ public class User {
     }
 
     public String checkEmail(String email) throws SQLException{
-        if(getEmailByUsername(getUsername()).contains(email)){
+        if(getEmailByUsername(this.getUsernameByEmail(email)).contains(email)){
             Main.getLogger().logInfo("Emailadress is already in use");
         }else{
             Main.getLogger().logInfo("Emailadress is not in use.");
@@ -230,7 +234,7 @@ public class User {
         String query = "SELECT last_login FROM users WHERE userid = ?";
         Timestamp lastLogin = null;
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, userId);
@@ -252,7 +256,7 @@ public class User {
         String query = "SELECT registration_time FROM users WHERE userid = ?";
         Timestamp registrationTime = null;
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, userId);
@@ -275,7 +279,7 @@ public class User {
         String query = "SELECT last_login FROM users WHERE username = ?";
         Timestamp lastLogin = null;
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, username);
@@ -297,7 +301,7 @@ public class User {
         String query = "SELECT last_login FROM users WHERE email = ?";
         Timestamp lastLogin = null;
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, email);
@@ -319,7 +323,7 @@ public class User {
         String query = "SELECT registration_time FROM users WHERE username = ?";
         Timestamp registrationTime = null;
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, username);
@@ -341,7 +345,7 @@ public class User {
         String query = "SELECT registration_time FROM users WHERE email = ?";
         Timestamp registrationTime = null;
 
-        try (Connection connection = Main.getDatabaseManager().getConnection();
+        try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, email);

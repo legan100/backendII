@@ -28,11 +28,6 @@ public class LogHandler {
             if(logfile.exists()){
                 logfile.renameFile("logs/"+getTimeForFiles() + ".log");
                 logfile.createFile();
-            }else{
-                logfile.createFile();
-                if(!logDirectory.exists()){
-                    logDirectory.getFile().mkdirs();
-                }
             }
         }
     }
@@ -63,4 +58,15 @@ public class LogHandler {
         return sdf.format(new Date());
     }
 
+    public FileManager getFile() {
+        return logfile;
+    }
+
+    public boolean isAllowLogging() {
+        return allowLogging;
+    }
+
+    public FileManager getLogDirectory() {
+        return logDirectory;
+    }
 }
