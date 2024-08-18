@@ -363,6 +363,12 @@ public class User {
         return registrationTime;
     }
 
+    /**
+     * Gibt das Passwort eines Benutzers basierend auf dem Benutzernamen zurück.
+     *
+     * @param username Der Benutzername des Benutzers.
+     * @return Das Passwort des Benutzers.
+     */
     public String getPasswordByUsername(String username) {
         String query = "SELECT password FROM users WHERE username = ?";
         String password = null;
