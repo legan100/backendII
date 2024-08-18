@@ -7,7 +7,6 @@ import gg.pixelgruene.oergpbackend.commands.stats.*;
 import gg.pixelgruene.oergpbackend.commands.update.CMD_updatePassword;
 import gg.pixelgruene.oergpbackend.serverhandler.*;
 import gg.pixelgruene.oergpbackend.utils.*;
-import lombok.Getter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
