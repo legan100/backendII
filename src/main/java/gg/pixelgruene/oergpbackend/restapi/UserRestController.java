@@ -18,7 +18,8 @@ public class UserRestController {
     public ResponseEntity<String> createUser(@RequestParam String email, @RequestParam long groupid, @RequestParam String username, @RequestParam String password) {
         try {
             userController.setUsername(username);
-            userController.createUser(email, password, groupid);
+            //String username, String email,String password, long groupid
+            userController.createUser(username, email, password, groupid);
             return ResponseEntity.ok("User created successfully");
         } catch (RuntimeException e) {
             return ResponseEntity.status(400).body("Error creating user: " + e.getMessage());
