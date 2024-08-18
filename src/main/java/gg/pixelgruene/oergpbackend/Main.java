@@ -17,19 +17,12 @@ import java.util.Scanner;
 public class Main {
 
     static ConsoleHandler consoleHandler = new ConsoleHandler();
-    @Getter
     static LogHandler logger;
-    @Getter
     static DatabaseManager backend;
-    @Getter
     static DatabaseManager money;
-    @Getter
     static DatabaseManager changelog;
-    @Getter
     static Scanner scanner = new Scanner(System.in);
-    @Getter
     static InternalMethods internalMethods = new InternalMethods();
-    @Getter
     static EmailHandler emailHandler = new EmailHandler();
 
     public static void main(String[] args) {
@@ -45,6 +38,7 @@ public class Main {
         money = new DatabaseManager("money");
         money.connect();
         changelog = new DatabaseManager("changelog");
+        changelog.connect();
         SpringApplication.run(Main.class, args);
         final long timeEnd = System.currentTimeMillis();
         getLogger().logInfo("Starttime: " + (timeEnd - timeStart) + " ms.\n");

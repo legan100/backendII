@@ -363,4 +363,26 @@ public class User {
         return registrationTime;
     }
 
+    public String getPasswordByUsername(String username) {
+        String query = "SELECT password FROM users WHERE username = ?";
+        String password = null;
+
+        try (Connection connection = Main.getBackend().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                password = resultSet.getString("password");
+            }
+
+        } catch (SQLException e) {
+            Main.getLogger().logError("Fehler beim Abrufen des Passworts für Benutzer: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        return password;
+    }
+
 }

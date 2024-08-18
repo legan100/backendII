@@ -60,7 +60,7 @@ public class UserController extends User{
 
             // Send confirmation email
             Main.getEmailHandler().sendEmail(this.getUser(), "Logindaten",
-                    "Hallo " + username + ", \n\nwir freuen uns, dass du dich registriert hast.\n\nIn dieser E-Mail erhälst du deine Zugangsdaten.\n\nBitte melde dich mit diesen an. Nach dieser Anmeldung wirst du aufgefordert, das Passwort zu ändern. \n\nName: " + this.getEmail(username) + "\nPasswort: " + this.getPassword(username) + "\n\nHier findest du die Datenschutzerklärung. \nSolltest du noch Fragen haben, darfst du dich gerne an den Support herantreten. \n\nViele Grüße\n\nDein Team", this.getEmail(username));
+                    "Hallo " + username + ", \n\nwir freuen uns, dass du dich registriert hast.\n\nIn dieser E-Mail erhälst du deine Zugangsdaten.\n\nBitte melde dich mit diesen an. Nach dieser Anmeldung wirst du aufgefordert, das Passwort zu ändern. \n\nName: " + this.getEmail(username) + "\nPasswort: " + this.getPasswordByUsername(username) + "\n\nHier findest du die Datenschutzerklärung. \nSolltest du noch Fragen haben, darfst du dich gerne an den Support herantreten. \n\nViele Grüße\n\nDein Team", this.getEmail(username));
         } catch (AddressException e) {
             throw new RuntimeException("Invalid email address: " + email, e);
         } catch (SQLException e) {
