@@ -4,30 +4,9 @@ import gg.pixelgruene.oergpbackend.Main;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GroupController extends Group{
-
-    public boolean isGroupNameAvailable(String groupName) {
-        String query = "SELECT COUNT(*) FROM groups WHERE groupname = ?";
-
-        try (Connection connection = Main.getDatabaseManager().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatement.setString(1, groupName);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                return resultSet.getInt(1) == 0;
-            }
-        } catch (SQLException e) {
-            Main.getLogger().logError("Fehler bei der Überprüfung des Gruppennamens: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-
-        return false; // Falls keine Daten gefunden wurden, nehmen wir an, dass der Name verfügbar ist
-    }
 
     public void addGroup(String groupName) {
         try {

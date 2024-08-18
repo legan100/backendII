@@ -20,7 +20,11 @@ public class Main {
     @Getter
     static LogHandler logger;
     @Getter
-    static DatabaseManager databaseManager;
+    static DatabaseManager backend;
+    @Getter
+    static DatabaseManager money;
+    @Getter
+    static DatabaseManager changelog;
     @Getter
     static Scanner scanner = new Scanner(System.in);
     @Getter
@@ -36,8 +40,11 @@ public class Main {
         logger = new LogHandler();
         logger.startLogging();
         logger.logInfo("Backend ist starting");
-        databaseManager = new DatabaseManager("backend");
-        databaseManager.connect();
+        backend = new DatabaseManager("backend");
+        backend.connect();
+        money = new DatabaseManager("money");
+        money.connect();
+        changelog = new DatabaseManager("changelog");
         SpringApplication.run(Main.class, args);
         final long timeEnd = System.currentTimeMillis();
         getLogger().logInfo("Starttime: " + (timeEnd - timeStart) + " ms.\n");
@@ -65,8 +72,40 @@ public class Main {
 
     public static void onStop() {
         getLogger().logInfo("Backend is stopping");
-        getDatabaseManager().disconnect();
+        getBackend().disconnect();
         getLogger().logInfo("Backend is stopped");
         System.exit(3);
+    }
+
+    public static LogHandler getLogger() {
+        return logger;
+    }
+
+    public static EmailHandler getEmailHandler() {
+        return emailHandler;
+    }
+
+    public static InternalMethods getInternalMethods() {
+        return internalMethods;
+    }
+
+    public static Scanner getScanner() {
+        return scanner;
+    }
+
+    public static ConsoleHandler getConsoleHandler() {
+        return consoleHandler;
+    }
+
+    public static DatabaseManager getBackend() {
+        return backend;
+    }
+
+    public static DatabaseManager getChangelog() {
+        return changelog;
+    }
+
+    public static DatabaseManager getMoney() {
+        return money;
     }
 }

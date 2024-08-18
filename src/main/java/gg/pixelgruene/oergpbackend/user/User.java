@@ -5,10 +5,7 @@ import gg.pixelgruene.oergpbackend.commands.add.CMD_CreateUser;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class User {
 
@@ -227,6 +224,139 @@ public class User {
             Main.getLogger().logInfo("Emailadress is not in use.");
         }
         return email;
+    }
+
+    public Timestamp getLastLogin(int userId) {
+        String query = "SELECT last_login FROM users WHERE userid = ?";
+        Timestamp lastLogin = null;
+
+        try (Connection connection = Main.getDatabaseManager().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                lastLogin = resultSet.getTimestamp("last_login");
+            }
+
+        } catch (SQLException e) {
+            Main.getLogger().logWarn("Fehler beim Abrufen des letzten Logins: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        return lastLogin;
+    }
+
+    public Timestamp getRegistrationTime(int userId) {
+        String query = "SELECT registration_time FROM users WHERE userid = ?";
+        Timestamp registrationTime = null;
+
+        try (Connection connection = Main.getDatabaseManager().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                registrationTime = resultSet.getTimestamp("registration_time");
+            }
+
+        } catch (SQLException e) {
+            Main.getLogger().logWarn("Fehler beim Abrufen der Registrierungszeit: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        return registrationTime;
+    }
+
+
+    public Timestamp getLastLoginByUsername(String username) {
+        String query = "SELECT last_login FROM users WHERE username = ?";
+        Timestamp lastLogin = null;
+
+        try (Connection connection = Main.getDatabaseManager().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                lastLogin = resultSet.getTimestamp("last_login");
+            }
+
+        } catch (SQLException e) {
+            Main.getLogger().logWarn("Fehler beim Abrufen des letzten Logins nach Benutzername: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        return lastLogin;
+    }
+
+    public Timestamp getLastLoginByEmail(String email) {
+        String query = "SELECT last_login FROM users WHERE email = ?";
+        Timestamp lastLogin = null;
+
+        try (Connection connection = Main.getDatabaseManager().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                lastLogin = resultSet.getTimestamp("last_login");
+            }
+
+        } catch (SQLException e) {
+            Main.getLogger().logWarn("Fehler beim Abrufen des letzten Logins nach E-Mail: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        return lastLogin;
+    }
+
+    public Timestamp getRegistrationTimeByUsername(String username) {
+        String query = "SELECT registration_time FROM users WHERE username = ?";
+        Timestamp registrationTime = null;
+
+        try (Connection connection = Main.getDatabaseManager().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                registrationTime = resultSet.getTimestamp("registration_time");
+            }
+
+        } catch (SQLException e) {
+            Main.getLogger().logWarn("Fehler beim Abrufen der Registrierungszeit nach Benutzername: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        return registrationTime;
+    }
+
+    public Timestamp getRegistrationTimeByEmail(String email) {
+        String query = "SELECT registration_time FROM users WHERE email = ?";
+        Timestamp registrationTime = null;
+
+        try (Connection connection = Main.getDatabaseManager().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                registrationTime = resultSet.getTimestamp("registration_time");
+            }
+
+        } catch (SQLException e) {
+            Main.getLogger().logWarn("Fehler beim Abrufen der Registrierungszeit nach E-Mail: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+        return registrationTime;
     }
 
 }

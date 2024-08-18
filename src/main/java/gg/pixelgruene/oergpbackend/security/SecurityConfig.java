@@ -15,9 +15,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeRequests->{
-                   //groupnames immer groß
+                    //groupnames immer groß
                     authorizeRequests.requestMatchers("/api/users/create").permitAll();
-                   authorizeRequests.requestMatchers("/admin/").hasRole("ADMIN");
+                    authorizeRequests.requestMatchers("/admin/").hasRole("ADMIN");
                     authorizeRequests.requestMatchers("/admin/").hasRole("FRONTENDDEV");
                 }).addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

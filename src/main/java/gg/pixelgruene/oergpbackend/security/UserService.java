@@ -9,11 +9,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import java.security.Key;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +21,9 @@ public class UserService {
 //TODO: Login schreiben
 
     public ResponseCookie createCookie(String username){
-        //.secure(true)
         //.domain("comgaiming.de")
         String token = generateToken(username);
-        return ResponseCookie.from("JWT", token).httpOnly(true).maxAge(7200).build();
+        return ResponseCookie.from("JWT", token).httpOnly(true).secure(true).maxAge(7200).build();
     }
 
     public String generateToken(String username){
