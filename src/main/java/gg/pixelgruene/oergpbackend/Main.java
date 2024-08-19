@@ -20,6 +20,7 @@ public class Main {
     static DatabaseManager backend;
     static DatabaseManager money;
     static DatabaseManager changelog;
+    static DatabaseManager coachangelog;
     static DatabaseManager login;
     static Scanner scanner = new Scanner(System.in);
     static InternalMethods internalMethods = new InternalMethods();
@@ -39,6 +40,8 @@ public class Main {
         money.connect();
         changelog = new DatabaseManager("changelog");
         changelog.connect();
+        coachangelog = new DatabaseManager("coachangelog");
+        coachangelog.connect();
         login = new DatabaseManager("login");
         login.connect();
         SpringApplication.run(Main.class, args);
