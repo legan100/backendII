@@ -1,4 +1,4 @@
-package gg.pixelgruene.oergpbackend.restapi;
+package gg.pixelgruene.oergpbackend.restapi.user;
 
 import gg.pixelgruene.oergpbackend.user.User;
 import gg.pixelgruene.oergpbackend.user.UserController;
