@@ -1,13 +1,10 @@
-package gg.pixelgruene.oergpbackend.restapi;
+package gg.pixelgruene.oergpbackend.restapi.user;
 
 import gg.pixelgruene.oergpbackend.service.GroupService;
-import gg.pixelgruene.oergpbackend.service.UserService;
 import gg.pixelgruene.oergpbackend.user.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.SQLException;
 import java.util.List;
 
 @RestController

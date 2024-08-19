@@ -7,7 +7,6 @@ import gg.pixelgruene.oergpbackend.commands.stats.*;
 import gg.pixelgruene.oergpbackend.commands.update.CMD_updatePassword;
 import gg.pixelgruene.oergpbackend.serverhandler.*;
 import gg.pixelgruene.oergpbackend.utils.*;
-import lombok.Getter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -21,6 +20,7 @@ public class Main {
     static DatabaseManager backend;
     static DatabaseManager money;
     static DatabaseManager changelog;
+    static DatabaseManager login;
     static Scanner scanner = new Scanner(System.in);
     static InternalMethods internalMethods = new InternalMethods();
     static EmailHandler emailHandler = new EmailHandler();
@@ -39,6 +39,8 @@ public class Main {
         money.connect();
         changelog = new DatabaseManager("changelog");
         changelog.connect();
+        login = new DatabaseManager("login");
+        login.connect();
         SpringApplication.run(Main.class, args);
         final long timeEnd = System.currentTimeMillis();
         getLogger().logInfo("Starttime: " + (timeEnd - timeStart) + " ms.\n");
@@ -101,5 +103,9 @@ public class Main {
 
     public static DatabaseManager getMoney() {
         return money;
+    }
+
+    public static DatabaseManager getLogin() {
+        return login;
     }
 }
