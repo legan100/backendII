@@ -274,7 +274,6 @@ public class User {
         return registrationTime;
     }
 
-
     public Timestamp getLastLoginByUsername(String username) {
         String query = "SELECT last_login FROM users WHERE username = ?";
         Timestamp lastLogin = null;
