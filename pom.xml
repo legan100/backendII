@@ -150,8 +150,13 @@
         <dependency>
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
-            <version>5.4</version> <!-- Verwende die neueste Version -->
+            <version>LATEST</version> <!-- Verwende die neueste Version -->
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>LATEST</version>
         </dependency>
     </dependencies>
 

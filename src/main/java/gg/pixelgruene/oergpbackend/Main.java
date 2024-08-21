@@ -19,9 +19,6 @@ public class Main {
     static LogHandler logger;
     static DatabaseManager backend;
     static DatabaseManager money;
-    static DatabaseManager changelog;
-    static DatabaseManager coachangelog;
-    static DatabaseManager login;
     static Scanner scanner = new Scanner(System.in);
     static InternalMethods internalMethods = new InternalMethods();
     static EmailHandler emailHandler = new EmailHandler();
@@ -38,12 +35,6 @@ public class Main {
         backend.connect();
         money = new DatabaseManager("money");
         money.connect();
-        changelog = new DatabaseManager("changelog");
-        changelog.connect();
-        coachangelog = new DatabaseManager("coachangelog");
-        coachangelog.connect();
-        login = new DatabaseManager("login");
-        login.connect();
         SpringApplication.run(Main.class, args);
         final long timeEnd = System.currentTimeMillis();
         getLogger().logInfo("Starttime: " + (timeEnd - timeStart) + " ms.\n");
@@ -100,15 +91,7 @@ public class Main {
         return backend;
     }
 
-    public static DatabaseManager getChangelog() {
-        return changelog;
-    }
-
     public static DatabaseManager getMoney() {
         return money;
-    }
-
-    public static DatabaseManager getLogin() {
-        return login;
     }
 }

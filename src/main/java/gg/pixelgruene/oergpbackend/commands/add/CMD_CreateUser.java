@@ -44,5 +44,4 @@ public class CMD_CreateUser {
         userController.createUser(username, email, password, groupid);
     }
 
-
 }
