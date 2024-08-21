@@ -25,12 +25,12 @@ public class TokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        UserService userService = new UserService();
+        LoginService userService = new LoginService();
         if(request.getRequestURI().equals("/login")||request.getRequestURI().equals("/api/users/create")) {
             doFilter(request, response, filterChain);
         }
 
-        UserService userService1 = new UserService();
+        LoginService userService1 = new LoginService();
         Cookie[] cookies = request.getCookies();
         String token = null;
 
