@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class UserService {
+public class LoginService {
 
     UserController userController = new UserController();
 //TODO: Login schreiben
