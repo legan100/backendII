@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class CoAChangelogController {
 
     public void createNewChangelog(String changelog, String author) {
-        String insertChangelogSQL = "INSERT INTO Changelog (changedate, authorid) VALUES (CURRENT_TIMESTAMP, (SELECT userid FROM users WHERE username = ?))";
+        String insertChangelogSQL = "INSERT INTO CoAChangelog (changedate, authorid) VALUES (CURRENT_TIMESTAMP, (SELECT userid FROM users WHERE username = ?))";
 
         try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertChangelogSQL)) {
@@ -30,7 +30,7 @@ public class CoAChangelogController {
     }
 
     public void removeChangelog(int id) {
-        String deleteChangelogSQL = "DELETE FROM Changelog WHERE changelogid = ?";
+        String deleteChangelogSQL = "DELETE FROM CoAChangelog WHERE changelogid = ?";
 
         try (Connection connection = Main.getBackend().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteChangelogSQL)) {

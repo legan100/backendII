@@ -68,7 +68,7 @@ public class User {
         return money;
     }
 
-    public void getFirstJoin(Player p) {
+    public String getFirstJoin(String p) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             // Lese die JSON-Datei und konvertiere sie in eine Liste von User-Objekten
@@ -82,34 +82,7 @@ public class User {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private Connection getConnection() {
-        // Hier den Code zur Erstellung der Datenbankverbindung einfügen
-        // Beispiel: return DriverManager.getConnection(url, user, password);
-
-        return Main.getLogin().getConnection(); // Beispiel für deine bestehende Methode
-    }
-
-    public String getFirstJoin(String uuid) {
-        String query = "SELECT first_join FROM player_data WHERE UUID = ?";
-        String firstJoin = null;
-
-        try (Connection connection = Main.getLogin().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatement.setString(1, uuid);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                firstJoin = resultSet.getString("first_join");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return firstJoin;
+        return p;
     }
 
 }
