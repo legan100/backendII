@@ -2,10 +2,8 @@ package gg.pixelgruene.oergpbackend.utils;
 
 import lombok.Getter;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
 
 @Getter
 public class FileManager {

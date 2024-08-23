@@ -4,7 +4,8 @@ import gg.pixelgruene.oergpbackend.commands.*;
 import gg.pixelgruene.oergpbackend.commands.add.CMD_CreateUser;
 import gg.pixelgruene.oergpbackend.commands.check.*;
 import gg.pixelgruene.oergpbackend.commands.stats.*;
-import gg.pixelgruene.oergpbackend.commands.update.CMD_updatePassword;
+import gg.pixelgruene.oergpbackend.commands.update.*;
+import gg.pixelgruene.oergpbackend.minecraft.MinecraftServerChecker;
 import gg.pixelgruene.oergpbackend.serverhandler.*;
 import gg.pixelgruene.oergpbackend.utils.*;
 import org.springframework.boot.SpringApplication;
@@ -22,6 +23,7 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
     static InternalMethods internalMethods = new InternalMethods();
     static EmailHandler emailHandler = new EmailHandler();
+    static MinecraftServerChecker minecraftServerChecker = new MinecraftServerChecker();
 
     public static void main(String[] args) {
         final long timeStart = System.currentTimeMillis();
@@ -35,6 +37,7 @@ public class Main {
         backend.connect();
         money = new DatabaseManager("money");
         money.connect();
+        minecraftServerChecker.scanBungeeConfigForServers();
         SpringApplication.run(Main.class, args);
         final long timeEnd = System.currentTimeMillis();
         getLogger().logInfo("Starttime: " + (timeEnd - timeStart) + " ms.\n");
@@ -48,15 +51,15 @@ public class Main {
                 case "updatepassword" -> CMD_updatePassword.onCommand();
                 case "help", "?"-> CMD_Help.onCommand();
                 case "getuser"-> CMD_GetUser.onCommand();
-                case "checkusername"-> CMD_CheckUsername.onCommand();
+                case "updatemail", "updateemail"-> CMD_UpdateEmail.onCommand();
                 case "checkmail", "checkemail"-> CMD_CheckEmail.onCommand();
+                case "checkusername"-> CMD_CheckUsername.onCommand();
                 case "javainfo" -> CMD_Javainfo.onCommand();
                 case "networkstats"-> CMD_Networkstats.onCommand();
                 case "serverstats" -> CMD_Serverstats.onCommand();
                 case "stats"-> CMD_Stats.onCommand();
                 default -> getLogger().logInfo("Please use 'help' for help.\n");
             }
-
         }while (true);
     }
 
