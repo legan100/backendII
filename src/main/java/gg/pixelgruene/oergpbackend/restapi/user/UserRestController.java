@@ -169,7 +169,7 @@ public class UserRestController {
         if (userController.isUserExists(username) || userController.getPasswordByUsername(username).equals(password)) {
             return (ResponseEntity<Boolean>) ResponseEntity.ok();
         }else{
-            return ResponseEntity.status(400).body(false);
+            return ResponseEntity.status(404).body(false);
         }
 
     }
