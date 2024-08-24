@@ -163,4 +163,14 @@ public class UserRestController {
         Timestamp registrationTime = userController.getRegistrationTimeByEmail(email);
         return ResponseEntity.ok(registrationTime);
     }
+
+    @GetMapping("/login")
+    public ResponseEntity<Boolean> login(@RequestParam String username, @RequestParam String password) {
+        if (userController.isUserExists(username) || userController.getPasswordByUsername(username).equals(password)) {
+            return (ResponseEntity<Boolean>) ResponseEntity.ok();
+        }else{
+            return ResponseEntity.status(400).body(false);
+        }
+
+    }
 }
